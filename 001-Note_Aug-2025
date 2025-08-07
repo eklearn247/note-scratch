@@ -1,0 +1,84 @@
+
+## August 2025 - NOTES
+
+### Using docker history Command
+
+``` docker history neo4j:latest ```
+```
+IMAGE          CREATED        CREATED BY                                      SIZE      COMMENT
+ed38ada00a4b   44 hours ago   CMD ["neo4j"]                                   0B        buildkit.dockerfile.v0
+<missing>      44 hours ago   ENTRYPOINT ["tini" "-g" "--" "/startup/docke…   0B        buildkit.dockerfile.v0
+<missing>      44 hours ago   EXPOSE map[7473/tcp:{} 7474/tcp:{} 7687/tcp:…   0B        buildkit.dockerfile.v0
+<missing>      44 hours ago   VOLUME [/data /logs]                            0B        buildkit.dockerfile.v0
+<missing>      44 hours ago   WORKDIR /var/lib/neo4j                          0B        buildkit.dockerfile.v0
+<missing>      44 hours ago   ENV PATH=/var/lib/neo4j/bin:/opt/java/openjd…   0B        buildkit.dockerfile.v0
+<missing>      44 hours ago   RUN |1 NEO4J_URI=https://dist.neo4j.org/neo4…   282MB     buildkit.dockerfile.v0
+<missing>      44 hours ago   COPY ./local-package/* /startup/ # buildkit     33.9kB    buildkit.dockerfile.v0
+<missing>      44 hours ago   RUN |1 NEO4J_URI=https://dist.neo4j.org/neo4…   2.43MB    buildkit.dockerfile.v0
+<missing>      44 hours ago   ARG NEO4J_URI=https://dist.neo4j.org/neo4j-c…   0B        buildkit.dockerfile.v0
+<missing>      44 hours ago   ENV PATH=/opt/java/openjdk/bin:/usr/local/sb…   0B        buildkit.dockerfile.v0
+<missing>      44 hours ago   COPY /opt/java/openjdk /opt/java/openjdk # b…   307MB     buildkit.dockerfile.v0
+<missing>      44 hours ago   ENV JAVA_HOME=/opt/java/openjdk                 0B        buildkit.dockerfile.v0
+<missing>      2 weeks ago    # debian.sh --arch 'amd64' out/ 'bullseye' '…   80.7MB    debuerreotype 0.15
+```
+
+```docker images```
+```
+REPOSITORY                             TAG          IMAGE ID       CREATED         SIZE
+neo4j                                  latest       ed38ada00a4b   44 hours ago    672MB
+linuxserver/piwigo                     latest       d48363ffd72e   8 days ago      360MB
+lycheeorg/lychee                       latest       0dbf56e63bed   12 days ago     990MB
+redis                                  alpine       a87c94cbea0b   4 weeks ago     60.5MB
+reallibrephotos/librephotos            latest       ff8db2d04fea   4 weeks ago     4.01GB
+postgres                               14           5f57369e14c2   2 months ago    426MB
+whisper-api-img                        latest       db7002d31496   2 months ago    9.79GB
+ghcr.io/open-webui/open-webui          main         a4d229442251   2 months ago    4.86GB
+portainer/portainer-docker-extension   2.27.6       67ffb7385d25   3 months ago    268MB
+caddy                                  2-alpine     14300de7e087   3 months ago    50.5MB
+chibisafe/chibisafe-server             latest       ad9063d60b67   4 months ago    927MB
+chibisafe/chibisafe                    latest       cf524934785a   4 months ago    205MB
+stirlingtools/stirling-pdf             latest       778f9a5bda11   6 months ago    1.8GB
+php                                    8.3-apache   a40cc2eb4839   6 months ago    506MB
+owncloud/server                        10.14        dfe5c44e9833   13 months ago   1.06GB
+mariadb                                10.11        6aa03f63fdf6   14 months ago   404MB
+my-ai1                                 latest       774d384131e5   14 months ago   1.48GB
+ubuntu                                 20.04        5f5250218d28   14 months ago   72.8MB
+ubuntu                                 latest       17c0145030df   14 months ago   76.2MB
+redis                                  6            0bff933a3fa7   14 months ago   106MB
+ubuntu                                 22.04        52882761a72a   15 months ago   77.9MB
+portainer/portainer-docker-extension   2.19.4       1a0fb356ea35   20 months ago   294MB
+ajeetraina/neo4j-docker-extension      1.0.0        6b9ad349d84c   2 years ago     253MB
+```
+
+---
+```docker history --format "{{.Size}} - {{.ID}} - {{.CreatedBy}}\n" --no-trunc neo4j:latest```
+```
+0B - sha256:ed38ada00a4b8b27a982373a54ccd4a0b4c8b9fe166c43f736fa60787826f025 - CMD ["neo4j"]
+
+0B - <missing> - ENTRYPOINT ["tini" "-g" "--" "/startup/docker-entrypoint.sh"]
+
+0B - <missing> - EXPOSE map[7473/tcp:{} 7474/tcp:{} 7687/tcp:{}]
+
+0B - <missing> - VOLUME [/data /logs]
+
+0B - <missing> - WORKDIR /var/lib/neo4j
+
+0B - <missing> - ENV PATH=/var/lib/neo4j/bin:/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+282MB - <missing> - RUN |1 NEO4J_URI=https://dist.neo4j.org/neo4j-community-2025.07.1-unix.tar.gz /bin/sh -c apt-get update     && apt-get install --no-install-recommends -o Acquire::Retries=10 -y       curl ca-certificates gcc libc-dev git jq make procps tini wget     && curl --fail --silent --show-error --location --remote-name ${NEO4J_URI}     && echo "${NEO4J_SHA256}  ${NEO4J_TARBALL}" | sha256sum -c --strict --quiet     && tar --extract --file ${NEO4J_TARBALL} --directory /var/lib     && mv /var/lib/neo4j-* "${NEO4J_HOME}"     && rm ${NEO4J_TARBALL}     && sed -i 's/Package Type:.*/Package Type: docker bullseye/' $NEO4J_HOME/packaging_info     && mv /startup/neo4j-admin-report.sh "${NEO4J_HOME}"/bin/neo4j-admin-report     && mv "${NEO4J_HOME}"/data /data     && mv "${NEO4J_HOME}"/logs /logs     && chown -R neo4j:neo4j /data     && chmod -R 777 /data     && chown -R neo4j:neo4j /logs     && chmod -R 777 /logs     && chown -R neo4j:neo4j "${NEO4J_HOME}"     && chmod -R 777 "${NEO4J_HOME}"     && chmod -R 755 "${NEO4J_HOME}/bin"     && ln -s /data "${NEO4J_HOME}"/data     && ln -s /logs "${NEO4J_HOME}"/logs     && git clone https://github.com/ncopa/su-exec.git     && cd su-exec     && git checkout 4c3bb42b093f14da70d8ab924b487ccfbb1397af     && echo d6c40440609a23483f12eb6295b5191e94baf08298a856bab6e15b10c3b82891 su-exec.c | sha256sum -c     && echo 2a87af245eb125aca9305a0b1025525ac80825590800f047419dc57bba36b334 Makefile | sha256sum -c     && make     && mv /su-exec/su-exec /usr/bin/su-exec     && apt-get -y purge --auto-remove curl gcc git make libc-dev     && rm -rf /var/lib/apt/lists/* /su-exec # buildkit
+
+33.9kB - <missing> - COPY ./local-package/* /startup/ # buildkit
+
+2.43MB - <missing> - RUN |1 NEO4J_URI=https://dist.neo4j.org/neo4j-community-2025.07.1-unix.tar.gz /bin/sh -c addgroup --gid 7474 --system neo4j && adduser --uid 7474 --system --no-create-home --home "${NEO4J_HOME}" --ingroup neo4j neo4j # buildkit
+
+0B - <missing> - ARG NEO4J_URI=https://dist.neo4j.org/neo4j-community-2025.07.1-unix.tar.gz
+
+0B - <missing> - ENV PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin NEO4J_SHA256=09a0bca676b2b4c2b539d9fe4736dadc9dd844f566b50912da918fa14da8416e NEO4J_TARBALL=neo4j-community-2025.07.1-unix.tar.gz NEO4J_EDITION=community NEO4J_HOME=/var/lib/neo4j LANG=C.UTF-8
+
+307MB - <missing> - COPY /opt/java/openjdk /opt/java/openjdk # buildkit
+
+0B - <missing> - ENV JAVA_HOME=/opt/java/openjdk
+
+80.7MB - <missing> - # debian.sh --arch 'amd64' out/ 'bullseye' '@1753056000'
+```
+---
