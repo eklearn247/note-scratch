@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        padding: 20px;
+    }
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    th, td {
+        border: 1px solid #dee2e6;
+        padding: 10px;
+        text-align: left;
+    }
+    th {
+        background-color: #343a40;
+        color: white;
+    }
+    tr:nth-child(even) {
+        background-color: #f1f3f5;
+    }
+    .relational { background-color: #d4edda; }
+    .nosql { background-color: #fff3cd; }
+    .document { background-color: #ffe8a1; }
+    .keyvalue { background-color: #ffd6a5; }
+    .widecolumn { background-color: #fbc4ab; }
+    .graph-nosql { background-color: #f9dcc4; }
+    .objectoriented { background-color: #d1ecf1; }
+    .graph { background-color: #cfe2ff; }
+    .cloud { background-color: #e2e3e5; }
+    .timeseries { background-color: #f8d7da; }
+    .vector { background-color: #f5c6cb; }
+    .hierarchical { background-color: #e6ccff; }
+    .network { background-color: #ffccf9; }
+    .distributed { background-color: #caffbf; }
+</style>
+</head>
+<body>
+<h1>Database Types Comparison</h1>
+<table>
+    <tr>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Key Features</th>
+        <th>Examples</th>
+    </tr>
+    <tr class="relational">
+        <td>Relational Databases</td>
+        <td>Store data in tables with rows and columns.</td>
+        <td>Structured approach using SQL; strong consistency; transaction management.</td>
+        <td>MySQL, PostgreSQL, Oracle</td>
+    </tr>
+    <tr class="nosql">
+        <td>NoSQL Databases</td>
+        <td>Handle large, unstructured/semi-structured data.</td>
+        <td>Flexible schema; scalable; multiple subtypes.</td>
+        <td>MongoDB, Redis, Cassandra, Neo4j</td>
+    </tr>
+    <tr class="document">
+        <td>├─ Document DBs</td>
+        <td>Store data in documents (e.g., JSON).</td>
+        <td>Flexible data models.</td>
+        <td>MongoDB</td>
+    </tr>
+    <tr class="keyvalue">
+        <td>├─ Key-Value Stores</td>
+        <td>Store data as key-value pairs.</td>
+        <td>High speed, simplicity.</td>
+        <td>Redis</td>
+    </tr>
+    <tr class="widecolumn">
+        <td>├─ Wide-Column Stores</td>
+        <td>Store data in columns.</td>
+        <td>Optimized for large read/write ops.</td>
+        <td>Cassandra</td>
+    </tr>
+    <tr class="graph-nosql">
+        <td>└─ Graph Databases (NoSQL variant)</td>
+        <td>Represent relationships between data points.</td>
+        <td>Uses nodes/edges.</td>
+        <td>Neo4j</td>
+    </tr>
+    <tr class="objectoriented">
+        <td>Object-Oriented Databases</td>
+        <td>Store data as objects.</td>
+        <td>Matches OOP concepts; handles complex data structures.</td>
+        <td>db4o, ObjectDB</td>
+    </tr>
+    <tr class="graph">
+        <td>Graph Databases</td>
+        <td>Focus on relationships between data points.</td>
+        <td>Ideal for social networks, fraud detection.</td>
+        <td>Neo4j, Amazon Neptune</td>
+    </tr>
+    <tr class="cloud">
+        <td>Cloud Databases</td>
+        <td>Hosted on cloud platforms.</td>
+        <td>Scalable, flexible, cost-effective; managed services.</td>
+        <td>AWS RDS, Azure Cosmos DB, Google Cloud SQL</td>
+    </tr>
+    <tr class="timeseries">
+        <td>Time Series Databases</td>
+        <td>Store and analyze time-stamped data.</td>
+        <td>Optimized for IoT, finance, sensor data.</td>
+        <td>InfluxDB, TimescaleDB</td>
+    </tr>
+    <tr class="vector">
+        <td>Vector Databases</td>
+        <td>Store and query high-dimensional vectors.</td>
+        <td>Used in AI/ML applications.</td>
+        <td>Pinecone, Milvus</td>
+    </tr>
+    <tr class="hierarchical">
+        <td>Hierarchical Databases</td>
+        <td>Tree-like structure.</td>
+        <td>Fast for hierarchical data queries.</td>
+        <td>IBM IMS</td>
+    </tr>
+    <tr class="network">
+        <td>Network Databases</td>
+        <td>Graph-like relationships.</td>
+        <td>More complex than hierarchical models.</td>
+        <td>IDMS</td>
+    </tr>
+    <tr class="distributed">
+        <td>Distributed Databases</td>
+        <td>Spread data across multiple machines.</td>
+        <td>High availability, fault tolerance.</td>
+        <td>Google Spanner, CockroachDB</td>
+    </tr>
+</table>
+</body>
+</html>
