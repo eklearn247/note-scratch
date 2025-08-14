@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Database Cheat Sheet — Types, Protocols & Ports</title>
+  <style>
+    :root{
+      --bg:#0f172a;           /* slate-900 */
+      --card:#111827;         /* gray-900 */
+      --text:#e5e7eb;         /* gray-200 */
+      --muted:#9ca3af;        /* gray-400 */
+      --border:#1f2937;       /* gray-800 */
+      --accent:#22d3ee;       /* cyan-400 */
+      --ring:#334155;         /* slate-700 */
+
+      /* category colors */
+      --rdbms:#60a5fa;        /* blue-400 */
+      --document:#f59e0b;     /* amber-500 */
+      --keyvalue:#34d399;     /* emerald-400 */
+      --widecolumn:#22d3ee;   /* cyan-400 */
+      --graph:#a78bfa;        /* violet-400 */
+      --object:#f472b6;       /* pink-400 */
+      --cloud:#f97316;        /* orange-500 */
+      --timeseries:#ef4444;   /* red-500 */
+      --vector:#06b6d4;       /* cyan-500 */
+      --hierarchical:#84cc16; /* lime-500 */
+      --network:#10b981;      /* emerald-500 */
+      --distributed:#38bdf8;  /* sky-400 */
+      --multimodel:#eab308;   /* yellow-500 */
+      --search:#93c5fd;       /* blue-300 */
+      --columnar:#fb7185;     /* rose-400 */
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#0b1220,#0f172a 30%);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
+    header{padding:28px 20px 8px;text-align:center}
+    h1{margin:0 0 6px;font-size:clamp(22px,3.5vw,34px)}
+    p.lead{margin:0;color:var(--muted)}
+
+    .wrap{max-width:1200px;margin:20px auto;padding:0 16px 40px}
+
+    .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:18px 0}
+    .search{flex:1 1 280px;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:10px 12px}
+    .search input{width:100%;background:transparent;border:0;outline:0;color:var(--text)}
+
+    .legend{display:flex;flex-wrap:wrap;gap:8px}
+    .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:var(--card);font-size:12px;color:var(--text);opacity:.95}
+    .dot{width:10px;height:10px;border-radius:50%}
+
+    table{width:100%;border-collapse:separate;border-spacing:0;background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+    thead th{position:sticky;top:0;background:#0b1220;padding:14px 12px;text-align:left;color:#cbd5e1;border-bottom:1px solid var(--border);font-weight:700}
+    tbody td{padding:12px;border-bottom:1px solid var(--border);vertical-align:top}
+    tbody tr:hover{background:#0b1220}
+    .type{display:inline-flex;align-items:center;gap:8px;font-weight:600}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:4px 10px;border-radius:999px;font-weight:600;color:#0b1220;background:#fff}
+
+    /* type-specific pills */
+    .rdbms{background:var(--rdbms)}
+    .document{background:var(--document)}
+    .keyvalue{background:var(--keyvalue)}
+    .widecolumn{background:var(--widecolumn)}
+    .graph{background:var(--graph)}
+    .object{background:var(--object)}
+    .cloud{background:var(--cloud)}
+    .timeseries{background:var(--timeseries)}
+    .vector{background:var(--vector)}
+    .hierarchical{background:var(--hierarchical)}
+    .network{background:var(--network)}
+    .distributed{background:var(--distributed)}
+    .multimodel{background:var(--multimodel)}
+    .search{background:var(--search)}
+    .columnar{background:var(--columnar)}
+
+    .muted{color:var(--muted)}
+    .small{font-size:12px}
+
+    @media (max-width:760px){
+      thead{display:none}
+      tbody tr{display:grid;grid-template-columns:1fr;gap:6px;padding:12px}
+      tbody td{border:0;padding:6px 12px}
+      tbody td::before{content:attr(data-label);display:block;color:var(--muted);font-size:12px;margin-bottom:4px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Database Cheat Sheet — Types, Protocols & Ports</h1>
+    <p class="lead">Color‑coded reference of common databases with protocol and default port numbers.</p>
+  </header>
+
+  <div class="wrap">
+    <div class="toolbar">
+      <div class="search" role="search" aria-label="Search table">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input id="search" placeholder="Filter by database or type…" />
+      </div>
+      <div class="legend" aria-label="Legend">
+        <span class="badge"><span class="dot" style="background:var(--rdbms)"></span>RDBMS</span>
+        <span class="badge"><span class="dot" style="background:var(--document)"></span>Document</span>
+        <span class="badge"><span class="dot" style="background:var(--keyvalue)"></span>Key‑Value</span>
+        <span class="badge"><span class="dot" style="background:var(--widecolumn)"></span>Wide‑Column</span>
+        <span class="badge"><span class="dot" style="background:var(--graph)"></span>Graph</span>
+        <span class="badge"><span class="dot" style="background:var(--object)"></span>Object‑Oriented</span>
+        <span class="badge"><span class="dot" style="background:var(--cloud)"></span>Cloud</span>
+        <span class="badge"><span class="dot" style="background:var(--timeseries)"></span>Time Series</span>
+        <span class="badge"><span class="dot" style="background:var(--vector)"></span>Vector</span>
+        <span class="badge"><span class="dot" style="background:var(--hierarchical)"></span>Hierarchical</span>
+        <span class="badge"><span class="dot" style="background:var(--network)"></span>Network</span>
+        <span class="badge"><span class="dot" style="background:var(--distributed)"></span>Distributed</span>
+        <span class="badge"><span class="dot" style="background:var(--multimodel)"></span>Multi‑Model</span>
+        <span class="badge"><span class="dot" style="background:var(--search)"></span>Search</span>
+        <span class="badge"><span class="dot" style="background:var(--columnar)"></span>Columnar</span>
+      </div>
+    </div>
+
+    <table id="db-table" aria-describedby="table-desc">
+      <caption id="table-desc" class="small muted" style="caption-side: bottom; text-align:left; padding:10px 4px;">Protocols and ports shown are defaults; deployments may customize them.</caption>
+      <thead>
+        <tr>
+          <th scope="col">Database Type</th>
+          <th scope="col">Example Database</th>
+          <th scope="col">Protocol</th>
+          <th scope="col">Default Port</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- RDBMS -->
+        <tr>
+          <td class="type" data-label="Database Type"><span class="pill rdbms">Relational (RDBMS)</span></td>
+          <td data-label="Example Database">MySQL / MariaDB</td>
+          <td data-label="Protocol">MySQL Protocol (TCP)</td>
+          <td data-label="Default Port">3306</td>
+        </tr>
+        <tr>
+          <td class="type" data-label="Database Type"><span class="pill rdbms">Relational (RDBMS)</span></td>
+          <td data-label="Example Database">PostgreSQL</td>
+          <td data-label="Protocol">PostgreSQL Protocol (TCP)</td>
+          <td data-label="Default Port">5432</td>
+        </tr>
+        <tr>
+          <td class="type" data-label="Database Type"><span class="pill rdbms">Relational (RDBMS)</span></td>
+          <td data-label="Example Database">Oracle Database</td>
+          <td data-label="Protocol">Oracle Net (TCP)</td>
+          <td data-label="Default Port">1521</td>
+        </tr>
+        <tr>
+          <td class="type" data-label="Database Type"><span class="pill rdbms">Relational (RDBMS)</span></td>
+          <td data-label="Example Database">Microsoft SQL Server</td>
+          <td data-label="Protocol">Tabular Data Stream (TDS)</td>
+          <td data-label="Default Port">1433</td>
+        </tr>
+        <tr>
+          <td class="type" data-label="Database Type"><span class="pill rdbms">Relational (RDBMS)</span></td>
+          <td data-label="Example Database">SQLite</td>
+          <td data-label="Protocol">File‑based (No network)</td>
+          <td data-label="Default Port">N/A</td>
+        </tr>
+
+        <!-- Document -->
+        <tr>
+          <td class="type"><span class="pill document">Document (NoSQL)</span></td>
+          <td>MongoDB</td>
+          <td>MongoDB Wire Protocol (TCP)</td>
+          <td>27017</td>
+        </tr>
+        <tr>
+          <td class="type"><span class="pill document">Document (NoSQL)</span></td>
+          <td>CouchDB</td>
+          <td>HTTP/REST (TCP)</td>
+          <td>5984</td>
+        </tr>
+        <tr>
+          <td class="type"><span class="pill document">Document (NoSQL)</span></td>
+          <td>Amazon DocumentDB</td>
+          <td>MongoDB Wire Protocol (TCP)</td>
+          <td>27017</td>
+        </tr>
+
+        <!-- Key-Value -->
+        <tr>
+          <td class="type"><span class="pill keyvalue">Key‑Value (NoSQL)</span></td>
+          <td>Redis</td>
+          <td>Redis Protocol (TCP)</td>
+          <td>6379</td>
+        </tr>
+        <tr>
+          <td class="type"><span class="pill keyvalue">Key‑Value (NoSQL)</span></td>
+          <td>Memcached</td>
+          <td>Memcached Protocol (TCP/UDP)</td>
+          <td>11211</td>
+        </tr>
+        <tr>
+          <td class="type"><span class="pill keyvalue">Key‑Value (NoSQL)</span></td>
+          <td>Amazon DynamoDB</td>
+          <td>HTTP/HTTPS (TCP)</td>
+          <td>443</td>
+        </tr>
+
+        <!-- Wide-Column -->
+        <tr>
+          <td class="type"><span class="pill widecolumn">Wide‑Column (NoSQL)</span></td>
+          <td>Apache Cassandra</td>
+          <td>Native Protocol (TCP)</td>
+          <td>9042</td>
+        </tr>
+        <tr>
+          <td class="type"><span class="pill widecolumn">Wide‑Column (NoSQL)</span></td>
+          <td>HBase</td>
+          <td>Thrift / REST</td>
+          <td>9090 (Thrift), 8080 (REST)</td>
+        </tr>
+
+        <!-- Graph -->
+        <tr>
+          <td class="type"><span class="pill graph">Graph</span></td>
+          <td>Neo4j</td>
+          <td>Bolt Protocol (TCP)</td>
+          <td>7687</td>
+        </tr>
+        <tr>
+          <td class="type"><span class="pill graph">Graph</span></td>
+          <td>Amazon Neptune</td>
+          <td>HTTPS (Gremlin/SPARQL/openCypher)</td>
+          <td>8182</td>
+        </tr>
+        <tr>
+          <td class="type"><span class="pill graph">Graph</span></td>
+          <td>TigerGraph</td>
+          <td>REST / GSQL Protocol</td>
+          <td>14240 (REST API)</td>
+        </tr>
+
+        <!-- Object-Oriented -->
+        <tr>
+          <td class="type"><span class="pill object">Object‑Oriented</span></td>
+          <td>db4o</td>
+          <td>Custom Binary Protocol</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td class="type"><span class="pill object">Object‑Oriented</span></td>
+          <td>ObjectDB</td>
+          <td>Java/JPA Protocol</td>
+          <td>N/A</td>
+        </tr>
+
+        <!-- Cloud -->
+        <tr>
+          <td class="type"><span class="pill cloud">Cloud</span></td>
+          <td>AWS RDS (MySQL)</td>
+          <td>MySQL Protocol (TCP)</td>
+          <td>3306</td>
+        </tr>
+        <tr>
+          <td class="type"><span class="pill cloud">Cloud</span></td>
+          <td>Azure SQL Database</td>
+          <td>TDS Protocol (TCP)</td>
+          <td>1433</td>
+        </tr>
+        <tr>
+          <td class="type"><span class="pill cloud">Cloud</span></td>
+          <td>Google Cloud Spanner</td>
+          <td>gRPC / HTTPS</td>
+          <td>443</td>
+        </tr>
+
+        <!-- Time Series -->
+        <tr>
+          <td class="type"><span class="pill timeseries">Time Series</span></td>
+          <td>InfluxDB</td>
+          <td>HTTP API (TCP)</td>
+          <td>8086</td>
+        </tr>
+        <tr>
+          <td class="type"><span class="pill timeseries">Time Series</span></td>
+          <td>TimescaleDB</td>
+          <td>PostgreSQL Protocol (TCP)</td>
+          <td>5432</td>
+        </tr>
+        <tr>
+          <td class="type"><span class="pill timeseries">Time Series</span></td>
+          <td>Prometheus</td>
+          <td>HTTP/REST (TCP)</td>
+          <td>9090</td>
+        </tr>
+
+        <!-- Vector -->
+        <tr>
+          <td class="type"><span class="pill vector">Vector</span></td>
+          <td>Pinecone</td>
+          <td>HTTPS API</td>
+          <td>443</td>
+        </tr>
+        <tr>
+          <td class="type"><span class="pill vector">Vector</span></td>
+          <td>Milvus</td>
+          <td>gRPC</td>
+          <td>19530</td>
+        </tr>
+        <tr>
+          <td class="type"><span class="pill vector">Vector</span></td>
+          <td>Weaviate</td>
+          <td>HTTP/REST (TCP)</td>
+          <td>8080</td>
+        </tr>
+
+        <!-- Hierarchical -->
+        <tr>
+          <td class="type"><span class="pill hierarchical">Hierarchical</span></td>
+          <td>IBM IMS</td>
+          <td>Proprietary Protocol</td>
+          <td>N/A</td>
+        </tr>
+
+        <!-- Network -->
+        <tr>
+          <td class="type"><span class="pill network">Network</span></td>
+          <td>IDMS</td>
+          <td>Proprietary Protocol</td>
+          <td>N/A</td>
+        </tr>
+
+        <!-- Distributed -->
+        <tr>
+          <td class="type"><span class="pill distributed">Distributed</span></td>
+          <td>Google Spanner</td>
+          <td>gRPC / HTTPS</td>
+          <td>443</td>
+        </tr>
+        <tr>
+          <td class="type"><span class="pill distributed">Distributed</span></td>
+          <td>CockroachDB</td>
+          <td>PostgreSQL Wire Protocol (TCP)</td>
+          <td>26257</td>
+        </tr>
+        <tr>
+          <td class="type"><span class="pill distributed">Distributed</span></td>
+          <td>YugabyteDB</td>
+          <td>PostgreSQL / CQL Protocols</td>
+          <td>5433 (Postgres), 9042 (CQL)</td>
+        </tr>
+
+        <!-- Multi-Model -->
+        <tr>
+          <td class="type"><span class="pill multimodel">Multi‑Model</span></td>
+          <td>ArangoDB</td>
+          <td>HTTP/REST (TCP)</td>
+          <td>8529</td>
+        </tr>
+        <tr>
+          <td class="type"><span class="pill multimodel">Multi‑Model</span></td>
+          <td>OrientDB</td>
+          <td>Binary / HTTP Protocol</td>
+          <td>2424 (Binary), 2480 (HTTP)</td>
+        </tr>
+
+        <!-- Search -->
+        <tr>
+          <td class="type"><span class="pill search">Search</span></td>
+          <td>Elasticsearch</td>
+          <td>HTTP/REST (TCP)</td>
+          <td>9200 (REST), 9300 (Transport)</td>
+        </tr>
+        <tr>
+          <td class="type"><span class="pill search">Search</span></td>
+          <td>Apache Solr</td>
+          <td>HTTP/REST (TCP)</td>
+          <td>8983</td>
+        </tr>
+
+        <!-- Columnar / Analytics -->
+        <tr>
+          <td class="type"><span class="pill columnar">Columnar</span></td>
+          <td>ClickHouse</td>
+          <td>Native Protocol / HTTP</td>
+          <td>9000 (Native), 8123 (HTTP)</td>
+        </tr>
+        <tr>
+          <td class="type"><span class="pill columnar">Columnar</span></td>
+          <td>Amazon Redshift</td>
+          <td>PostgreSQL Protocol (TCP)</td>
+          <td>5439</td>
+        </tr>
+        <tr>
+          <td class="type"><span class="pill columnar">Columnar</span></td>
+          <td>Google BigQuery</td>
+          <td>HTTPS (TCP)</td>
+          <td>443</td>
+        </tr>
+        <tr>
+          <td class="type"><span class="pill columnar">Columnar</span></td>
+          <td>Snowflake</td>
+          <td>HTTPS (TCP)</td>
+          <td>443</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const input = document.querySelector('#search');
+    const rows = Array.from(document.querySelectorAll('#db-table tbody tr'));
+    input.addEventListener('input', () => {
+      const q = input.value.toLowerCase().trim();
+      rows.forEach(r => {
+        const text = r.textContent.toLowerCase();
+        r.style.display = text.includes(q) ? '' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>
